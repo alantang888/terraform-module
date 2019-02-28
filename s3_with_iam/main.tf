@@ -26,6 +26,9 @@ resource "aws_s3_bucket_object" "s3_dev_content" {
   content = "This is Dev"
   content_type = "text/html"
   count = "${var.create_folder ? 1 : 0}"
+  lifecycle {
+    ignore_changes = ["*"]
+  }
 }
 
 resource "aws_s3_bucket_object" "s3_test_content" {
@@ -34,6 +37,9 @@ resource "aws_s3_bucket_object" "s3_test_content" {
   content = "This is Test"
   content_type = "text/html"
   count = "${var.create_folder ? 1 : 0}"
+  lifecycle {
+    ignore_changes = ["*"]
+  }
 }
 
 resource "aws_s3_bucket_object" "s3_sandbox_content" {
@@ -42,6 +48,9 @@ resource "aws_s3_bucket_object" "s3_sandbox_content" {
   content = "This is Sandbox"
   content_type = "text/html"
   count = "${var.create_folder ? 1 : 0}"
+  lifecycle {
+    ignore_changes = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "bucket_policy" {
