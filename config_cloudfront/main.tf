@@ -3,8 +3,8 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   enabled = true
   is_ipv6_enabled = true
 
-  aliases = ["${var.host}.${var.dns_zone}"]
-  comment = "${var.host}.${var.dns_zone}"
+  aliases = "${keys(var.domain_zone_map)}"
+  comment = "${join(", ", keys(var.domain_zone_map))}"
 
   default_root_object = "index.html"
 
@@ -53,12 +53,14 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 }
 
 data "aws_route53_zone" "get_domain_zone" {
-  name = "${var.dns_zone}."
+  count = "${length(var.domain_zone_map)}"
+  name = "${element(values(var.domain_zone_map), count.index)}"
 }
 
 resource "aws_route53_record" "add_cloudfront_record_to_route53" {
-  zone_id = "${data.aws_route53_zone.get_domain_zone.zone_id}"
-  name = "${var.host}.${var.dns_zone}"
+  count = "${length(var.domain_zone_map)}"
+  zone_id = "${element(data.aws_route53_zone.get_domain_zone.*.zone_id, index(data.aws_route53_zone.get_domain_zone.*.name, var.domain_zone_map[element(keys(var.domain_zone_map), count.index)]))}"
+  name = "${element(keys(var.domain_zone_map), count.index)}"
   type = "A"
   alias {
     evaluate_target_health = false

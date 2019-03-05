@@ -7,12 +7,9 @@ variable "origin_path" {
   default = "/"
 }
 
-variable "dns_zone" {
-  type = "string"
-}
-
-variable "host" {
-  type = "string"
+variable "domain_zone_map" {
+  type = "map"
+  description = "This map key is main FQDN (must only have one key). value is zone name. Don't remember the tail `.`."
 }
 
 variable "acm_cert_arn" {
