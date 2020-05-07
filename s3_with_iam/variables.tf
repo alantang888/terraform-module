@@ -4,7 +4,7 @@ variable "bucket_name" {
 
 variable "bucket_prefix" {
   type = "string"
-  default = "lalamove-"
+  default = ""
 }
 
 variable "create_folder" {

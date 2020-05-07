@@ -16,40 +16,40 @@ data "aws_iam_policy_document" "s3_public_access_policy" {
 }
 
 resource "aws_s3_bucket_policy" "example" {
-  bucket = "${aws_s3_bucket.s3.id}"
-  policy = "${data.aws_iam_policy_document.s3_public_access_policy.json}"
+  bucket = aws_s3_bucket.s3.id
+  policy = data.aws_iam_policy_document.s3_public_access_policy.json
 }
 
 resource "aws_s3_bucket_object" "s3_dev_content" {
-  bucket = "${aws_s3_bucket.s3.bucket}"
+  bucket = aws_s3_bucket.s3.bucket
   key = "dev/index.html"
   content = "This is Dev"
   content_type = "text/html"
-  count = "${var.create_folder ? 1 : 0}"
+  count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["*"]
+    ignore_changes = ["all"]
   }
 }
 
 resource "aws_s3_bucket_object" "s3_test_content" {
-  bucket = "${aws_s3_bucket.s3.bucket}"
+  bucket = aws_s3_bucket.s3.bucket
   key = "test/index.html"
   content = "This is Test"
   content_type = "text/html"
-  count = "${var.create_folder ? 1 : 0}"
+  count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["*"]
+    ignore_changes = ["all"]
   }
 }
 
 resource "aws_s3_bucket_object" "s3_sandbox_content" {
-  bucket = "${aws_s3_bucket.s3.bucket}"
+  bucket = aws_s3_bucket.s3.bucket
   key = "sandbox/index.html"
   content = "This is Sandbox"
   content_type = "text/html"
-  count = "${var.create_folder ? 1 : 0}"
+  count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["*"]
+    ignore_changes = ["all"]
   }
 }
 
@@ -92,6 +92,6 @@ resource "aws_iam_user" "iam_user_for_bucket" {
 }
 
 resource "aws_iam_user_policy_attachment" "bind_policy_to_user" {
-  policy_arn = "${aws_iam_policy.bucket_policy.arn}"
-  user = "${aws_iam_user.iam_user_for_bucket.name}"
+  policy_arn = aws_iam_policy.bucket_policy.arn
+  user = aws_iam_user.iam_user_for_bucket.name
 }
