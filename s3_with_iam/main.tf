@@ -27,7 +27,7 @@ resource "aws_s3_bucket_object" "s3_dev_content" {
   content_type = "text/html"
   count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["all"]
+    ignore_changes = all
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_object" "s3_test_content" {
   content_type = "text/html"
   count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["all"]
+    ignore_changes = all
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_object" "s3_sandbox_content" {
   content_type = "text/html"
   count = var.create_folder ? 1 : 0
   lifecycle {
-    ignore_changes = ["all"]
+    ignore_changes = all
   }
 }
 
