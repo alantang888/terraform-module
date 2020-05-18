@@ -1,6 +1,10 @@
 resource "aws_s3_bucket" "s3" {
-  bucket = "${var.bucket_prefix}${var.bucket_name}"
-  acl = "private"
+  bucket = var.bucket_name
+  acl = "public-read"
+
+  website {
+    index_document = "index.html"
+  }
 }
 
 data "aws_iam_policy_document" "s3_public_access_policy" {
@@ -15,42 +19,9 @@ data "aws_iam_policy_document" "s3_public_access_policy" {
   }
 }
 
-resource "aws_s3_bucket_policy" "example" {
+resource "aws_s3_bucket_policy" "attach_public_read_to_s3" {
   bucket = aws_s3_bucket.s3.id
   policy = data.aws_iam_policy_document.s3_public_access_policy.json
-}
-
-resource "aws_s3_bucket_object" "s3_dev_content" {
-  bucket = aws_s3_bucket.s3.bucket
-  key = "dev/index.html"
-  content = "This is Dev"
-  content_type = "text/html"
-  count = var.create_folder ? 1 : 0
-  lifecycle {
-    ignore_changes = all
-  }
-}
-
-resource "aws_s3_bucket_object" "s3_test_content" {
-  bucket = aws_s3_bucket.s3.bucket
-  key = "test/index.html"
-  content = "This is Test"
-  content_type = "text/html"
-  count = var.create_folder ? 1 : 0
-  lifecycle {
-    ignore_changes = all
-  }
-}
-
-resource "aws_s3_bucket_object" "s3_sandbox_content" {
-  bucket = aws_s3_bucket.s3.bucket
-  key = "sandbox/index.html"
-  content = "This is Sandbox"
-  content_type = "text/html"
-  count = var.create_folder ? 1 : 0
-  lifecycle {
-    ignore_changes = all
-  }
 }
 
 resource "aws_iam_policy" "bucket_policy" {
