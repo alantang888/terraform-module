@@ -15,3 +15,13 @@ variable "domain_zone_map" {
 variable "acm_cert_arn" {
   type = "string"
 }
+
+variable "iam_user_name" {
+  type = "string"
+}
+
+variable "add_dns_record" {
+  type = bool
+  default = true
+  description = "Add DNS record of cloudfront"
+}
